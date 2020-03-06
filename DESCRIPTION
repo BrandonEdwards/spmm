@@ -1,11 +1,13 @@
 Package: spmm
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0.9001
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Generalized spatial Poisson mixture models.
+Version: 0.1.0.9004
+Date: 2020-03-05
+Authors@R: c(person("Brandon P.M.", "Edwards", role = c("aut", "cre"),
+                     email = "edwardsb@uoguelph.ca"),
+              person("Daniel", "Gillis", role = "aut",
+                      email = "dgillis@uoguelph.ca"))
+Description: Something something something mixture models and stuff.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

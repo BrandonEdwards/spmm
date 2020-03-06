@@ -37,3 +37,9 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Testing files
+testfile.R
+neighbor1.txt
+neighbor2.txt
+data.txt
