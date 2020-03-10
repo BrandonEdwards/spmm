@@ -47,7 +47,7 @@ spmm <- function(data = NULL,
   k_2 <- 0.1
   v_2 <- C + 2
   N_u <- N - sum(z)
-  total_iterations <- (n_iter/n_chains) + n_burnin
+  total_iterations <- round(n_iter/n_chains) + n_burnin
 
   # Create empty matrices
   beta <- array(dim = c(C, m, n_chains))
@@ -117,12 +117,16 @@ spmm <- function(data = NULL,
   Z_chain <- array(dim = c(N, C, round(n_iter/n_chains), n_chains))
   pi_chain <- array(dim = c(1, C, round(n_iter/n_chains), n_chains))
 
-  pb <- progress::progress_bar$new(
-    format = "Done! Beginning sampling...\n[:bar] :percent eta: :eta",
-    clear = FALSE,
-    total = total_iterations,
-    width = 100)
-  pb$tick(0)
+  message(paste0("Done! Beginning burn-in period for ", n_burnin, " iterations."))
+
+  burnin_pb <- progress::progress_bar$new(format = "\r[:bar] :percent eta: :eta",
+                                          clear = FALSE,
+                                          total = n_burnin,
+                                          width = 100)
+
+  sample_pb <- NULL
+
+  burnin_pb$tick(0)
 
   for (i in 1:total_iterations)
   {
@@ -134,6 +138,7 @@ spmm <- function(data = NULL,
                                X = X,
                                at_risk = at_risk,
                                disease = disease,
+                               region = region,
                                Beta = beta[,,j],
                                phi = phi[,,j],
                                pi = pi[,,j],
@@ -145,6 +150,8 @@ spmm <- function(data = NULL,
                                    Z = Z[,,j],
                                    X = X,
                                    at_risk = at_risk,
+                                   disease = disease,
+                                   region = region,
                                    Beta = beta[,,j],
                                    beta_scale = beta_scale,
                                    phi = phi[,,j],
@@ -159,7 +166,22 @@ spmm <- function(data = NULL,
       }
     }
 
-    pb$tick()
+    if (i <= n_burnin){
+      burnin_pb$tick()
+    }else{
+      sample_pb$tick()
+    }
+
+    if (i == n_burnin)
+    {
+      message(paste0("\nDone! Beginning MCMC sampling for ", n_iter, " iterations."))
+
+      sample_pb <- progress::progress_bar$new(format = "\r[:bar] :percent eta: :eta",
+                                              clear = FALSE,
+                                              total = round(n_iter / n_chains),
+                                              width = 100)
+    }
+
   }
 
   to_return <- list(Z_samples = Z_chain,

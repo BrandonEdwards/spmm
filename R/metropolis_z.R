@@ -9,6 +9,7 @@ metropolis_z <- function(Y = NULL,
                          X = NULL,
                          at_risk = NULL,
                          disease = NULL,
+                         region = NULL,
                          Beta = NULL,
                          phi = NULL,
                          pi = NULL,
@@ -38,24 +39,13 @@ metropolis_z <- function(Y = NULL,
   }
 
   pi_proposed <- colSums(Z_proposed) / sum(colSums(Z_proposed))
-  # loglik_1 <- loglik_2 <- 0
-  # for (i in 1:C)
-  # {
-  #   loglik_1 <- loglik_1 +
-  #     sum((Z_proposed[,i] * y) * (X %*% beta[,i]) -
-  #           (Z_proposed[,i] * at_risk) * exp(X %*% beta[,i]) +
-  #           (Z_proposed[,i] * log(pi_proposed)))
-  #
-  #   loglik_2 <- loglik_2 +
-  #     sum((Z[,i] * y) * (X %*% beta[,i]) -
-  #           (Z[,i] * at_risk) * exp(X %*% beta[,i]) +
-  #           (Z[,i] * log(pi)))
-  # }
 
   u <- runif(1)
   loglik_1 <- loglik(Z = Z_proposed,
                      Y = Y,
                      X = X,
+                     disease = disease,
+                     region = region,
                      Beta = Beta,
                      at_risk = at_risk,
                      phi = phi,
@@ -64,6 +54,8 @@ metropolis_z <- function(Y = NULL,
   loglik_2 <- loglik(Z = Z,
                      Y = Y,
                      X = X,
+                     disease = disease,
+                     region = region,
                      Beta = Beta,
                      at_risk = at_risk,
                      phi = phi,

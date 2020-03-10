@@ -6,6 +6,8 @@
 loglik <- function(Z = NULL,
                    Y = NULL,
                    X = NULL,
+                   disease = NULL,
+                   region = NULL,
                    Beta = NULL,
                    at_risk = NULL,
                    phi = NULL,
@@ -13,11 +15,12 @@ loglik <- function(Z = NULL,
 {
   ll_sum <- 0
   C <- length(pi)
+  phi_vector <- phi[disease * region]
 
   for (i in 1:C)
   {
-    ll_sum <- ll_sum + sum((Z[,i] * Y) * (X %*% Beta[,i]) -
-                           (Z[,i] * at_risk) * exp(X %*% Beta[,i]) +
+    ll_sum <- ll_sum + sum((Z[,i] * Y) * (X %*% Beta[,i] + phi_vector) -
+                           (Z[,i] * at_risk) * exp(X %*% Beta[,i] + phi_vector) +
                            (Z[,i] * log(pi)))
   }
 
