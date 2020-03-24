@@ -48,11 +48,11 @@ metropolis_beta <- function(Z = NULL,
                        at_risk = at_risk,
                        phi = phi,
                        pi = pi)
-    log_ratio <- loglik_1 - loglik_2
+    log_ratio_beta <- loglik_1 - loglik_2
 
     if (u > 0)
     {
-      if (log_ratio >= log(u))
+      if (log_ratio_beta >= log(u))
       {
         beta_list <- beta_list_proposed
       }

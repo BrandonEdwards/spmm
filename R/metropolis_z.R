@@ -20,7 +20,7 @@ metropolis_z <- function(Y = NULL,
 
   N_u <- N - sum(z)
   repeat{
-    n_u <- round(runif(C-1, min = 0, max = N_u))
+    n_u <- round(runif(C-1, min = 0, max = (N_u - 5)))
     if (sum(n_u) <= N_u) break
   }
   n_u[C] <- N_u - sum(n_u)
@@ -39,6 +39,7 @@ metropolis_z <- function(Y = NULL,
   }
 
   pi_proposed <- colSums(Z_proposed) / sum(colSums(Z_proposed))
+ #print(pi_proposed)
 
   u <- runif(1)
   loglik_1 <- loglik(Z = Z_proposed,
@@ -60,11 +61,12 @@ metropolis_z <- function(Y = NULL,
                      at_risk = at_risk,
                      phi = phi,
                      pi = pi)
-  log_ratio <- loglik_1 - loglik_2
+  log_ratio_z <- loglik_1 - loglik_2
+  #print(paste0("loglik1: ", loglik_1, " loglik2: ", loglik_2))
 
   if (u > 0)
   {
-    if (log_ratio >= log(u))
+    if (log_ratio_z >= log(u))
     {
       return(list(Z = Z_proposed,
                   pi = pi_proposed))

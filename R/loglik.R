@@ -15,7 +15,12 @@ loglik <- function(Z = NULL,
 {
   ll_sum <- 0
   C <- length(pi)
-  phi_vector <- phi[disease * region]
+  phi_vector <- NULL
+  for (k in 1:length(disease))
+  {
+    phi_vector <- c(phi_vector, phi[disease[k], region[k]])
+  }
+
 
   for (i in 1:C)
   {
