@@ -1,6 +1,6 @@
 Package: spmm
 Type: Package
-Title: Generalized spatial Poisson mixture models.
+Title: Generalized spatial Poisson mixture models
 Version: 0.1.0.9004
 Date: 2020-03-05
 Authors@R: c(person("Brandon P.M.", "Edwards", role = c("aut", "cre"),

@@ -51,6 +51,7 @@ spmm <- function(data = NULL,
   v_2 <- C + 2
   N_u <- N - sum(z)
   total_iterations <- round(n_iter/n_chains) + n_burnin
+  deviance_sum <- 0
 
   # Create empty matrices
   beta <- array(dim = c(C, m, n_chains))
@@ -224,6 +225,16 @@ spmm <- function(data = NULL,
         Sigma_chain[,, i - n_burnin, j] <- Sigma[,,j]
         B_chain[,, i - n_burnin, j] <- B[,,j]
         phi_chain[,, i - n_burnin, j] <- phi[,,j]
+
+        deviance_sum <- deviance_sum + ((-2) * loglik(Z = Z[,,j],
+                                                      Y = counts,
+                                                      X = X,
+                                                      disease = disease,
+                                                      region = region,
+                                                      Beta = beta[,,j],
+                                                      at_risk = at_risk,
+                                                      phi = phi[,,j],
+                                                      pi = pi[,,j]))
       }
     }
 
@@ -255,7 +266,8 @@ spmm <- function(data = NULL,
                     A_samples = A_chain,
                     mcar_samples = mcar_chain,
                     u_samples = u_chain,
-                    phi_samples = phi_chain)
+                    phi_samples = phi_chain,
+                    mean_deviance = deviance_sum / n_iter)
 
   return(to_return)
 }
