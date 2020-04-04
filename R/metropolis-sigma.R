@@ -22,27 +22,24 @@ metropolis_sigma <- function(Z = NULL,
                              pi = NULL)
 {
   C <- dim(Sigma)[1]
-  A <- chol(Sigma)
+  R <- dim(D)[1]
+
+  Sigma_proposed <- MCMCpack::rwish(v = v,
+                                    S = Sigma/v)
+
+  A <- chol(Sigma_proposed)
+  phi_proposed <- matrix(0, nrow = C, ncol = R)
 
   for (i in 1:C)
   {
-    for (j in i:C)
+    for (j in 1:R)
     {
-      if (runif(1) > 0.5)
+      for (l in 1:C)
       {
-        A[i,j] <- A[i,j] + (sigma_scale * rnorm(1))
+        phi_proposed[i,j] <- phi_proposed[i,j] + A[i,l]*u_matrix[l,j]
       }
     }
   }
-
-  Sigma_proposed <- A %*% t(A)#MCMCpack::riwish(v = v, S = Sigma)
-
-  phi_u_proposed <- mcar(B = B,
-                         Sigma = Sigma_proposed,
-                         D = D,
-                         W = W,
-                         disease = disease,
-                         region = region)
 
   u <- runif(1)
 
@@ -53,7 +50,7 @@ metropolis_sigma <- function(Z = NULL,
                      region = region,
                      Beta = Beta,
                      at_risk = at_risk,
-                     phi = phi_u_proposed[["phi"]],
+                     phi = phi_proposed,
                      pi = pi)
 
   prior_1 <- target_sigma(Sigma = Sigma_proposed,
@@ -85,8 +82,8 @@ metropolis_sigma <- function(Z = NULL,
     if (log_ratio_sigma >= log(u))
     {
       return(list(Sigma = Sigma_proposed,
-                  phi = phi_u_proposed[["phi"]],
-                  u = phi_u_proposed[["u"]]))
+                  phi = phi_proposed,
+                  u = u_matrix))
     }else
     {
       return(list(Sigma = Sigma,
@@ -100,23 +97,4 @@ metropolis_sigma <- function(Z = NULL,
                 u = u_matrix))
   }
 
-  # for (i in 1:C)
-  # {
-  #   for (j in i:C)
-  #   {
-  #     Sigma_proposed[i,j] <- Sigma[i,j] + (sigma_scale + rnorm(1))
-  #
-  #     u <- runif(1)
-  #
-  #     loglik_1 <- loglik(Z = Z,
-  #                        Y = Y,
-  #                        X = X,
-  #                        disease = disease,
-  #                        region = region,
-  #                        Beta = Beta,
-  #                        at_risk = at_risk,
-  #                        phi = phi,
-  #                        pi = pi)
-  #   }
-  # }
 }

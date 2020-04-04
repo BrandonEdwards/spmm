@@ -43,12 +43,12 @@ spmm <- function(data = NULL,
 
   # Set constants
   beta_scale <- 0.05
-  sigma_scale <- 5e-3
-  B_scale <- 5e-3
+  sigma_scale <- 10
+  B_scale <- 10
   k_1 <- 0.1
-  v_1 <- C + 2
+  v_1 <- C + 98
   k_2 <- 0.1
-  v_2 <- C + 2
+  v_2 <- C + 98
   N_u <- N - sum(z)
   total_iterations <- round(n_iter/n_chains) + n_burnin
   deviance_sum <- 0

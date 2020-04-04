@@ -24,21 +24,7 @@ metropolis_B <- function(Z = NULL,
   C <- dim(B)[1]
   R <- dim(D)[1]
 
-  G <- chol(B)
-
-  for (i in 1:C)
-  {
-    for (j in i:C)
-    {
-      if (runif(1) > 0.5)
-      {
-        G[i,j] <- G[i,j] + (B_scale * rnorm(1))
-      }
-    }
-  }
-
-  B_proposed <- G %*% t(G)
-  #B_proposed <- MCMCpack::riwish(v = v,S = B)
+  B_proposed <- MCMCpack::rwish(v = v, S = B/v)
 
   phi_proposed_list <- mcar(B = B_proposed,
                             Sigma = Sigma,
@@ -99,6 +85,7 @@ metropolis_B <- function(Z = NULL,
                       u = u_matrix)
 
   log_ratio_B <- (loglik_1 + prior_1) - (loglik_2 + prior_2)
+  #log_ratio_B <- prior_1 - prior_2
 
   if (u > 0)
   {
