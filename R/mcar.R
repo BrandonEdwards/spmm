@@ -2,6 +2,8 @@
 #'
 #' Multivariate Conditionally Autoregressive
 #'
+#' @export
+#'
 
 mcar <- function(B = NULL,
                  Sigma = NULL,
@@ -16,7 +18,7 @@ mcar <- function(B = NULL,
   I_C <- diag(x = 1, nrow = C, ncol = C)
   A <- chol(Sigma)
 
-  mcar <- (diag(x = 1, nrow = C) %x% D) - (cov2cor(B) %x% W)
+  mcar <- (diag(x = 1, nrow = C) %x% D) - (B %x% W)
   u <- as.vector(mvtnorm::rmvnorm(n = 1,
                         mean = rep(0, R*C),
                         sigma = mcar))

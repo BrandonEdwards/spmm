@@ -13,9 +13,16 @@ target_B <- function(D = NULL,
 {
   zeta <- kappa
   xi <- eigen(pracma::sqrtm(D)$Binv %*% W %*% pracma::sqrtm(D)$Binv)$values
+  #
+  # eigen_check <- (1/min(xi) < zeta) && (zeta < 1)
+  # if (!all(eigen_check))
+  # {
+  #   return(-Inf)
+  # }
 
-  eigen_check <- (1/min(xi) < zeta) && (zeta < 1)
-  if (!all(eigen_check))
+  if (!valid_B(zeta = kappa,
+               D = D,
+               W = W))
   {
     return(-Inf)
   }

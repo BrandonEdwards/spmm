@@ -54,7 +54,7 @@ spmm <- function(data = NULL,
   deviance_sum <- 0
 
   # Create empty matrices
-  beta <- array(dim = c(C, m, n_chains))
+  beta <- array(dim = c(m, C, n_chains))
   B <- array(dim = c(C, C, n_chains))
   Sigma <- array(dim = c(C, C, n_chains))
   A <- array(dim = c(C, C, n_chains))
@@ -68,11 +68,18 @@ spmm <- function(data = NULL,
   for (i in 1:n_chains)
   {
     # Initiate betas
-    beta[,,i] <- matrix(rep(0.5, m*C), nrow = C)
+    beta[,,i] <- matrix(rep(0.5, m*C), nrow = m)
 
     # Initiate B matrix
-    B[,,i] <- MCMCpack::riwish(v = v_1,
-                               S = diag(k_1 * v_1, nrow = C))
+    val_B <- FALSE
+    while (isFALSE(val_B))
+    {
+      B[,,i] <- MCMCpack::riwish(v = v_1,
+                                 S = diag(k_1 * v_1, nrow = C))
+      val_B <- valid_B(zeta = eigen(B[,,i])$values,
+                       D = D,
+                       W = W)
+    }
 
     # Initiate Sigma and set A = Cholesky Decomposition(Sigma)
     Sigma[,,i] <- MCMCpack::riwish(v = v_2,
@@ -123,7 +130,7 @@ spmm <- function(data = NULL,
   }
 
   # Create empty chains for each tracked parameter
-  beta_chain <- array(dim = c(C, m, round(n_iter/n_chains), n_chains))
+  beta_chain <- array(dim = c(m, C, round(n_iter/n_chains), n_chains))
   B_chain <- array(dim = c(C, C, round(n_iter/n_chains), n_chains))
   Sigma_chain <- array(dim = c(C, C, round(n_iter/n_chains), n_chains))
   A_chain <- array(dim = c(C, C, round(n_iter/n_chains), n_chains))
