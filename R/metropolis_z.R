@@ -18,12 +18,12 @@ metropolis_z <- function(Y = NULL,
   C <- dim(Z)[2]
   Z_proposed <- matrix(0, nrow = N, ncol = C)
 
-  N_u <- N - sum(alloc)
-  repeat{
-    n_u <- round(runif(C-1, min = 0, max = (N_u - 5)))
-    if (sum(n_u) <= N_u) break
-  }
-  n_u[C] <- N_u - sum(n_u)
+  # N_u <- N - sum(alloc)
+  # repeat{
+  #   n_u <- round(runif(C-1, min = 0, max = (N_u - 5)))
+  #   if (sum(n_u) <= N_u) break
+  # }
+  # n_u[C] <- N_u - sum(n_u)
 
   for (k in 1:N)
   {
@@ -32,13 +32,13 @@ metropolis_z <- function(Y = NULL,
       Z_proposed[k, disease[k]] <- 1
     }else
     {
-      r_allocation <- as.vector(t(rmultinom(1, 1, n_u / sum(n_u))))
+      r_allocation <- as.vector(t(rmultinom(1, 1, pi)))
       Z_proposed[k,] <- r_allocation
-      n_u <- n_u - r_allocation
+      #n_u <- n_u - r_allocation
     }
   }
 
-  pi_proposed <- colSums(Z_proposed) / sum(colSums(Z_proposed))
+  #pi_proposed <- colSums(Z_proposed) / sum(colSums(Z_proposed))
  #print(pi_proposed)
 
   u <- runif(1)
@@ -50,7 +50,7 @@ metropolis_z <- function(Y = NULL,
                      Beta = Beta,
                      at_risk = at_risk,
                      phi = phi,
-                     pi = pi_proposed)
+                     pi = pi)
 
   loglik_2 <- loglik(Z = Z,
                      Y = Y,
@@ -68,16 +68,13 @@ metropolis_z <- function(Y = NULL,
   {
     if (log_ratio_z >= log(u))
     {
-      return(list(Z = Z_proposed,
-                  pi = pi_proposed))
+      return(Z_proposed)
     }else
     {
-      return(list(Z = Z,
-                  pi = pi))
+      return(Z)
     }
   }else
   {
-    return(list(Z = Z,
-                pi = pi))
+    return(Z)
   }
 }

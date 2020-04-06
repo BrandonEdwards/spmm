@@ -156,9 +156,20 @@ spmm <- function(data = NULL,
   {
     for (j in 1:n_chains)
     {
-      Z_and_pi <- metropolis_z(Y = counts,
+      Z[,,j] <- metropolis_z(Y = counts,
+                             Z = Z[,,j],
+                             alloc = alloc,
+                             X = X,
+                             at_risk = at_risk,
+                             disease = disease,
+                             region = region,
+                             Beta = beta[,,j],
+                             phi = phi[,,j],
+                             pi = pi[,,j],
+                             N = N)
+
+      pi[,,j] <- metropolis_pi(Y = counts,
                                Z = Z[,,j],
-                               alloc = alloc,
                                X = X,
                                at_risk = at_risk,
                                disease = disease,
@@ -167,8 +178,6 @@ spmm <- function(data = NULL,
                                phi = phi[,,j],
                                pi = pi[,,j],
                                N = N)
-      Z[,,j] <- Z_and_pi[["Z"]]
-      pi[,,j] <- Z_and_pi[["pi"]]
 
       beta[,,j] <- metropolis_beta(Y = counts,
                                    Z = Z[,,j],
