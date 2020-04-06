@@ -5,7 +5,7 @@
 
 metropolis_z <- function(Y = NULL,
                          Z = NULL,
-                         z = NULL,
+                         alloc = NULL,
                          X = NULL,
                          at_risk = NULL,
                          disease = NULL,
@@ -18,7 +18,7 @@ metropolis_z <- function(Y = NULL,
   C <- dim(Z)[2]
   Z_proposed <- matrix(0, nrow = N, ncol = C)
 
-  N_u <- N - sum(z)
+  N_u <- N - sum(alloc)
   repeat{
     n_u <- round(runif(C-1, min = 0, max = (N_u - 5)))
     if (sum(n_u) <= N_u) break
@@ -27,7 +27,7 @@ metropolis_z <- function(Y = NULL,
 
   for (k in 1:N)
   {
-    if (z[k] == 1)
+    if (alloc[k] == 1)
     {
       Z_proposed[k, disease[k]] <- 1
     }else

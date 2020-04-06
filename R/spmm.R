@@ -32,7 +32,7 @@ spmm <- function(data = NULL,
   disease <- data[["disease"]]
   region <- data[["region"]]
   at_risk <- data[["at_risk"]]
-  z <- data[["z"]]
+  alloc <- data[["alloc"]]
   C <- data[["C"]]
   R <- data[["R"]]
   D <- data[["D"]]
@@ -49,7 +49,7 @@ spmm <- function(data = NULL,
   v_1 <- C + 98
   k_2 <- 0.1
   v_2 <- C + 98
-  N_u <- N - sum(z)
+  N_u <- N - sum(alloc)
   total_iterations <- round(n_iter/n_chains) + n_burnin
   deviance_sum <- 0
 
@@ -114,7 +114,7 @@ spmm <- function(data = NULL,
 
     for (k in 1:N)
     {
-      if (z[k] == 1)
+      if (alloc[k] == 1)
       {
         Z[k, disease[k], i] <- 1
       }else
@@ -158,7 +158,7 @@ spmm <- function(data = NULL,
     {
       Z_and_pi <- metropolis_z(Y = counts,
                                Z = Z[,,j],
-                               z = z,
+                               alloc = alloc,
                                X = X,
                                at_risk = at_risk,
                                disease = disease,
