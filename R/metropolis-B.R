@@ -33,7 +33,47 @@ metropolis_B <- function(Z = NULL,
                      W = W)
   }
 
-  #B_proposed <- MCMCpack::rwish(v = v, S = B/v)
+  prior_1 <- target_B(D = D,
+                      W = W,
+                      v = v,
+                      C = C,
+                      R = R,
+                      kappa = eigen(B_proposed)$values,
+                      k = k,
+                      B = B_proposed,
+                      u = u_matrix)
+
+  prior_2 <- target_B(D = D,
+                      W = W,
+                      v = v,
+                      C = C,
+                      R = R,
+                      kappa = eigen(B)$values,
+                      k = k,
+                      B = B,
+                      u = u_matrix)
+
+  #log_ratio_B <- (loglik_1 + prior_1) - (loglik_2 + prior_2)
+  log_ratio_B <- prior_1 - prior_2
+  u <- runif(1)
+  if (u > 0)
+  {
+    if (log_ratio_B >= log(u))
+    {
+      return(B_proposed)
+    }else
+    {
+      return(B)
+    }
+  }else
+  {
+    return(B)
+  }
+
+
+
+
+
 
   phi_proposed_list <- mcar(B = B_proposed,
                             Sigma = Sigma,

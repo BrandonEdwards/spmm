@@ -234,7 +234,35 @@ spmm <- function(data = NULL,
       phi[,,j] <- Sigma_and_phi[["phi"]]
       u[,,j] <- Sigma_and_phi[["u"]]
 
-      B_and_phi <- metropolis_B(Z = Z[,,j],
+      if (isFALSE(constant_B))
+      {
+        B[,,j] <- metropolis_B(Z = Z[,,j],
+                               Y = counts,
+                               X = X,
+                               D = D,
+                               W = W,
+                               at_risk = at_risk,
+                               disease = disease,
+                               region = region,
+                               Sigma = Sigma[,,j],
+                               v = v_1,
+                               k = k_1,
+                               B = B[,,j],
+                               B_scale = B_scale,
+                               u_matrix = u[,,j],
+                               Beta = beta[,,j],
+                               phi = phi[,,j],
+                               pi = pi[,,j])
+      }else
+      {
+        B[,,j] <- diag(1, nrow = C)
+      }
+
+      # B[,,j] <- B_and_phi[["B"]]
+      # phi[,,j] <- B_and_phi[["phi"]]
+      # u[,,j] <- B_and_phi[["u"]]
+
+      phi_and_u <- metropolis_u(Z = Z[,,j],
                                 Y = counts,
                                 X = X,
                                 D = D,
@@ -250,10 +278,10 @@ spmm <- function(data = NULL,
                                 u_matrix = u[,,j],
                                 Beta = beta[,,j],
                                 phi = phi[,,j],
-                                pi = pi[,,j])
-      B[,,j] <- B_and_phi[["B"]]
-      phi[,,j] <- B_and_phi[["phi"]]
-      u[,,j] <- B_and_phi[["u"]]
+                                pi = pi[,,j],
+                                constant_B = constant_B)
+      phi[,,j] <- phi_and_u[["phi"]]
+      u[,,j] <- phi_and_u[["u"]]
 
       # Add samples to chains if we are past the burnin period
       if (i > n_burnin)
