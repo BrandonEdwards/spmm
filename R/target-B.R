@@ -20,13 +20,6 @@ target_B <- function(D = NULL,
   #   return(-Inf)
   # }
 
-  if (!valid_B(zeta = kappa,
-               D = D,
-               W = W))
-  {
-    return(-Inf)
-  }
-
   prob_u_given_B_1 <- 0
 
   for (i in 1:C)

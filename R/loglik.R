@@ -11,7 +11,8 @@ loglik <- function(Z = NULL,
                    Beta = NULL,
                    at_risk = NULL,
                    phi = NULL,
-                   pi = NULL)
+                   pi = NULL,
+                   alloc = NULL)
 {
   ll_sum <- 0
   C <- length(pi)
@@ -24,9 +25,17 @@ loglik <- function(Z = NULL,
 
   for (i in 1:C)
   {
-    ll_sum <- ll_sum + sum((Z[,i] * Y) * (X %*% Beta[,i] + phi_vector) -
-                           (Z[,i] * at_risk) * exp(X %*% Beta[,i] + phi_vector) +
-                           (Z[,i] * log(pi)))
+    if (is.null(alloc))
+    {
+      ll_sum <- ll_sum + sum((Z[,i] * Y) * (X %*% Beta[,i] + phi_vector) -
+                               (Z[,i] * at_risk) * exp(X %*% Beta[,i] + phi_vector) +
+                               (Z[,i] * log(pi)))
+    }else
+    {
+      ll_sum <- ll_sum + sum(alloc * ((Z[,i] * Y) * (X %*% Beta[,i] + phi_vector) -
+                                      (Z[,i] * at_risk) * exp(X %*% Beta[,i] + phi_vector) +
+                                      (Z[,i] * log(pi))))
+    }
   }
 
   return(ll_sum)

@@ -24,7 +24,16 @@ metropolis_B <- function(Z = NULL,
   C <- dim(B)[1]
   R <- dim(D)[1]
 
-  B_proposed <- MCMCpack::rwish(v = v, S = B/v)
+  val_B <- FALSE
+  while (isFALSE(val_B))
+  {
+    B_proposed <- MCMCpack::rwish(v = v, S = B/v)
+    val_B <- valid_B(zeta = eigen(B_proposed)$values,
+                     D = D,
+                     W = W)
+  }
+
+  #B_proposed <- MCMCpack::rwish(v = v, S = B/v)
 
   phi_proposed_list <- mcar(B = B_proposed,
                             Sigma = Sigma,
