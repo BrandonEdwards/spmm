@@ -2,6 +2,7 @@
 #'
 #' Multivariate Conditionally Autoregressive
 #'
+#' @importFrom mvtnorm rmvnorm
 #' @export
 #'
 

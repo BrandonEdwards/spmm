@@ -2,6 +2,8 @@
 #'
 #' Prior calculation for sigma
 #'
+#' @export
+#'
 
 target_sigma <- function(Sigma = NULL,
                          v = NULL,

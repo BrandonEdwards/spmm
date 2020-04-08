@@ -2,6 +2,8 @@
 #'
 #' Does M-H algo for Z, the allocation vector
 #'
+#' @importFrom stats rmultinom
+#'
 
 metropolis_z <- function(Y = NULL,
                          Z = NULL,

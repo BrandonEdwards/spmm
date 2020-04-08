@@ -1,5 +1,7 @@
 #' Target u
 #'
+#' @importFrom pracma sqrtm
+#'
 
 target_u <- function(D = NULL,
                      W = NULL,

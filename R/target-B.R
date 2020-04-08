@@ -1,5 +1,7 @@
 #' Target B
 #'
+#' @export
+#'
 
 target_B <- function(D = NULL,
                      W = NULL,

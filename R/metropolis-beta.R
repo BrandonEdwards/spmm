@@ -3,6 +3,8 @@
 #' \code{metropolis_beta} runs the Metropolis-Hastings algorithm to
 #'   update each Beta term one at a time
 #'
+#' @export
+#'
 
 metropolis_beta <- function(Z = NULL,
                             Y = NULL,

@@ -2,6 +2,8 @@
 #'
 #' \code{loglik} calculates the log-likelihood component of the SPMM
 #'
+#' @export
+#'
 
 loglik <- function(Z = NULL,
                    Y = NULL,

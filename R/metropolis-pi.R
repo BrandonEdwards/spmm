@@ -1,5 +1,7 @@
 #' Metropolis pi
 #'
+#' @export
+#'
 
 metropolis_pi <- function(Y = NULL,
                           Z = NULL,

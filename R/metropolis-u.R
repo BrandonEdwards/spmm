@@ -1,5 +1,7 @@
 #' Metropolis u
 #'
+#' @export
+#'
 
 metropolis_u <- function(Z = NULL,
                          Y = NULL,

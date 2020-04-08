@@ -12,6 +12,10 @@
 #' @param n_burnin How many iterations to burn in chain?
 #' @param n_chains How many chains to run per parameter?
 #'
+#' @importFrom MCMCpack riwish
+#' @importFrom stats rmultinom
+#' @importFrom progress progress_bar
+#'
 #' @export
 #'
 

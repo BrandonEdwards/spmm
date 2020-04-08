@@ -1,5 +1,7 @@
 #' Check validity of B
 #'
+#' @importFrom pracma sqrtm
+#'
 #' @export
 
 valid_B <- function(zeta = NULL,

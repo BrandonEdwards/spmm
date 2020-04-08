@@ -2,6 +2,10 @@
 #'
 #' Does the thing for sigma
 #'
+#' @importFrom MCMCpack rwish
+#'
+#' @export
+#'
 
 metropolis_sigma <- function(Z = NULL,
                              Y = NULL,
